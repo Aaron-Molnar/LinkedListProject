@@ -8,6 +8,7 @@ public class LList {
 
     private ListNode head;
     private ListNode tail;
+    private int listSize;
 
     public ListNode getHead() {
         return head;
@@ -27,9 +28,9 @@ public class LList {
 
     public void addLast(ListNode newNode) {
         //Sets ListNode parameter as new tail.
-        //checks if newNode is head/or no branches
+        //checks if newNode is head/or no edges
         if (newNode.getPrev() == null || newNode.getNext() == null) {
-            if (newNode == head) {
+            if (newNode == head && newNode.getNext() != null) {
                 head = newNode.getNext();
                 head.setPrev(null);
                 tail.setNext(newNode);
@@ -43,8 +44,9 @@ public class LList {
             if (head == null) {
                 head = newNode;
             }
+            listSize++;
             tail = newNode;
-        } else {//if newNode has existing branches
+        } else {//if newNode has existing edges
             newNode.getPrev().setNext(newNode.getNext());
             newNode.getNext().setPrev(newNode.getPrev());
             tail.setNext(newNode);
@@ -56,7 +58,10 @@ public class LList {
 
     public void addFirst(ListNode newNode) {
         //Sets ListNode parameter as new head.
-        //checks if newNode is tail/or no branches
+        //checks if newNode is tail/or no edges
+        if (newNode == null) {
+            return;
+        }
         if (newNode.getPrev() == null || newNode.getNext() == null) {
             if (newNode == tail) {
                 tail = newNode.getPrev();
@@ -72,9 +77,10 @@ public class LList {
                 head.setPrev(newNode);
                 newNode.setNext(head);
             }
+            listSize++;
             head = newNode;
 
-        } else { //if newNode has existing branches
+        } else { //if newNode has existing connections
             newNode.getPrev().setNext(newNode.getNext());
             newNode.getNext().setPrev(newNode.getPrev());
             head.setPrev(newNode);
@@ -104,22 +110,36 @@ public class LList {
             cur = cur.getNext();
             counter++;
         }
-        throw new IndexOutOfBoundsException();
+        return -1;
     }
 
 
     public String get(int index){
         //Given an index, return a value at specific index
-        ListNode cur = head;
-        int counter = 0;
+        ListNode cur;
+        int counter;
+        boolean firstHalf = index > listSize / 2;
+        if (firstHalf) {
+            cur = head;
+            counter = 0;
+        } else {
+            cur = tail;
+            counter = listSize - 1;
+        }
+
         while (cur != null) {
             if (counter == index) {
                 return cur.getValue();
             }
-            cur = cur.getNext();
-            counter++;
+            if (firstHalf) {
+                cur = cur.getNext();
+                counter++;
+            } else {
+                cur = cur.getPrev();
+                counter--;
+            }
         }
-        throw new IndexOutOfBoundsException();
+        return null;
     }
 
     public void add(ListNode newNode) {
@@ -140,6 +160,7 @@ public class LList {
             if (head == null) {
                 head = newNode;
             }
+            listSize++;
             tail = newNode;
         } else {
             newNode.getPrev().setNext(newNode.getNext());
@@ -172,6 +193,7 @@ public class LList {
                 if (cur == head) {
                     head = newNode;
                 }
+                listSize++;
                 cur.getPrev().setNext(newNode);
                 newNode.setPrev(cur.getPrev());
                 cur.setPrev(newNode);
@@ -241,6 +263,7 @@ public class LList {
             if (head == null) {
                 head = newNode;
             }
+            listSize++;
             tail = newNode;
         } else {
             newNode.getPrev().setNext(newNode.getNext());
@@ -257,6 +280,7 @@ public class LList {
         tail = tail.getPrev();
         tail.getNext().setPrev(null);
         tail.setNext(null);
+        listSize--;
         return val;
     }
 
@@ -281,6 +305,7 @@ public class LList {
                 }
                 cur.setNext(null);
                 cur.setPrev(null);
+                listSize--;
             }
             cur = cur.getNext();
             counter++;
@@ -307,6 +332,7 @@ public class LList {
                 }
                 cur.setNext(null);
                 cur.setPrev(null);
+                listSize--;
             }
             cur = cur.getNext();
         }
@@ -316,11 +342,13 @@ public class LList {
         head = head.getNext();
         head.getPrev().setNext(null);
         head.setPrev(null);
+        listSize--;
     }
     public void removeLast() {
         tail = tail.getPrev();
         tail.getNext().setPrev(null);
         tail.setNext(null);
+        listSize--;
     }
 
     public int size() {
@@ -333,6 +361,10 @@ public class LList {
             cur = cur.getNext();
         }
         return sizeCounter;
+    }
+
+    public int getSize() {
+        return listSize;
     }
 
     public void clear() {

@@ -10,25 +10,29 @@ public class ListNode {
     ListNode(String value) {
         this.setValue(value);
     }
-    public void setNext(ListNode nextObj) {
-        next = nextObj;
-    }
-    public void setPrev(ListNode prevObj) {
-        prev = prevObj;
-    }
-    public void setValue(String strValue) {
-        value = strValue;
-    }
 
-
-    public ListNode getNext(){
+    public ListNode getNext() {
         return next;
     }
+
+    public void setNext(ListNode next) {
+        this.next = next;
+    }
+
     public ListNode getPrev() {
         return prev;
     }
-    public String getValue(){
+
+    public void setPrev(ListNode prev) {
+        this.prev = prev;
+    }
+
+    public String getValue() {
         return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 
 

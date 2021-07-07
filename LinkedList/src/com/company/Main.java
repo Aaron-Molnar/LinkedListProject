@@ -12,6 +12,12 @@ public class Main {
         ListNode myNode4 = new ListNode("4");
         ListNode myNode5 = new ListNode("5");
 
+
+        LList myList = new LList();
+        myList.addFirst(null);
+        //myList.addFirst(null);
+        myList.printAll();
+        /*
         LList myList = new LList();
         myList.addFirst(myNode0);
         myList.addLast(myNode1);
